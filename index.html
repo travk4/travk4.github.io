@@ -10,19 +10,10 @@
       padding: 0;
       height: 100%;
       font-family: Arial, sans-serif;
-      background: #000;
-      color: #fff;
+      background: url('https://majestic-rp.ru/opengraph.png') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
       overflow: hidden;
-    }
-
-    video.background-video {
-      position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-      z-index: -1;
     }
 
     .container {
@@ -32,7 +23,23 @@
       justify-content: center;
       height: 100%;
       text-align: center;
+      backdrop-filter: blur(3px);
+      background-color: rgba(0, 0, 0, 0.5);
       padding: 20px;
+    }
+
+    .title {
+      font-size: 3em;
+      font-weight: bold;
+      color: #ff69b4; /* розовый */
+      animation: glow 2s infinite ease-in-out;
+      text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4;
+    }
+
+    @keyframes glow {
+      0% { text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4; }
+      50% { text-shadow: 0 0 20px #ff1493, 0 0 30px #ff69b4; }
+      100% { text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4; }
     }
 
     .ip-address {
@@ -46,24 +53,21 @@
       margin-top: 20px;
       cursor: pointer;
     }
+
+    .g-recaptcha {
+      margin-top: 10px;
+    }
   </style>
+
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
-
-  <!-- Видео-фон -->
-  <video autoplay muted loop class="background-video">
-    <source src="https://majestic-rp.ru/video/intro-bg.mp4" type="video/mp4">
-    Ваш браузер не поддерживает видео.
-  </video>
-
   <div class="container">
-    <h1>Добро пожаловать на Majestic RP</h1>
+    <div class="title">Majestic RP</div>
     <div class="ip-address" id="ip">Ваш IP: определяем...</div>
 
     <!-- Капча -->
     <div class="g-recaptcha" data-sitekey="6LegMmUrAAAAADqD9jsGKNPMsPe0k5QouYIczVAV"></div>
-
     <button onclick="submitCaptcha()">Продолжить</button>
   </div>
 
@@ -92,3 +96,4 @@
   </script>
 </body>
 </html>
+🔍 Что изменено:
